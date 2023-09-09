@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      .active-elevator {
+        background-color: #3498db !important;
+      }
+
+      .floors {
+        width: 200px;
+        height: 200px;
+        border: 2px solid black;
+        margin: auto;
+        padding: 50px;
+        text-align: center;
+        position: relative;
+      }
+
+      #levels {
+        border: 2px solid black;
+        align-content: center;
+        margin: 1px;
+      }
+
+      .elevator {
+        width: 200px;
+        height: 200px;
+        /* position: center; */
+        margin: auto;
+        /* bottom: 0; */
+        transition: bottom 5s;
+        top: 100px;
+      }
+
+      .floorbuttons {
+        width: 50px;
+        height: 50px;
+        margin-left: 100px;
+        margin-top: 200px;
+        padding: 20px;
+      }
+      .shaft {
+        float: left;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="shaft">
+      <div class="floorbuttons" id="level2btn">
+        <button id="btndwn" onclick="moveElevator(2,'DOWNWARD')">
+          MOVE DOWN
+        </button>
+      </div>
+      <div class="floorbuttons" id="level1btn">
+        <button id="1btnup" onclick="moveElevator(1,'UPWARD')">UP</button>
+        <button onclick="moveElevator(1,'DOWNWARD')" id="1btndwn">DOWN</button>
+      </div>
+      <div class="floorbuttons" id="level0btn">
+        <button id="btnup" onclick="moveElevator(0,'UPWARD')">MOVE UP</button>
+      </div>
+    </div>
+    <div class="shaft">
+      <div class="floors" id="level">
+        <div id="levels">level 2</div>
+        <div class="elevator bg-blue" id="elevator_level_2"></div>
+      </div>
+
+      <div class="floors" id="level">
+        <div id="levels">level 1</div>
+        <div class="elevator" id="elevator_level_1"></div>
+      </div>
+
+      <div class="floors" id="level">
+        <div id="levels">level 0</div>
+
+        <div class="elevator active-elevator" id="elevator_level_0"></div>
+      </div>
+    </div>
+    <script>
+      var currentLevel = 0;
+
+      function moveElevator(requestedLevel, type) {
+        if (requestedLevel == 2 && type == "DOWNWARD") {
+          removeCurrentFloor();
+          setTimeout(() => {
+            document
+              .getElementById("elevator_level_0")
+              .classList.add("active-elevator");
+            currentLevel = 0;
+          }, 10000);
+        }
+
+        if (requestedLevel == 1) {
+          if (type == "UPWARD" && currentLevel == requestedLevel) {
+            removeCurrentFloor();
+
+            setTimeout(() => {
+              document
+                .getElementById("elevator_level_2")
+                .classList.add("active-elevator");
+              currentLevel = 2;
+            }, 5000);
+          } else if (type == "DOWNWARD" && currentLevel == requestedLevel) {
+            removeCurrentFloor();
+            setTimeout(() => {
+              document
+                .getElementById("elevator_level_0")
+                .classList.add("active-elevator");
+              currentLevel = 0;
+            }, 5000);
+          } else {
+            removeCurrentFloor();
+            setTimeout(() => {
+              document
+                .getElementById("elevator_level_1")
+                .classList.add("active-elevator");
+              currentLevel = 1;
+            }, 5000);
+          }
+        }
+
+        if (requestedLevel == 0) {
+          if (type == "UPWARD") {
+            removeCurrentFloor();
+            setTimeout(() => {
+              addActiveClass("elevator_level_2");
+              currentLevel = 2;
+            }, 10000);
+          }
+        }
+      }
+
+      function addActiveClass(className) {
+        document.getElementById(className).classList.add("active-elevator");
+      }
+
+      function removeCurrentFloor() {
+        var element = document.getElementsByClassName("active-elevator");
+        element[0].classList.remove("active-elevator");
+      }
+    </script>
+  </body>
+</html>
